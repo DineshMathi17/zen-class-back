@@ -1,8 +1,8 @@
 const express = require("express") ;
 const router = express.Router();
-const Batch = require("../schemas/batch.model.js")
-const Student = require("../schemas/student.js")
-const Answer = require("../schemas/answer.js")
+const {BatchModel} = require("../schemas/batch.model.js")
+const {StudentModel} = require("../schemas/student.js")
+const {AnswerModel} = require("../schemas/answer.js")
 const { dbUrl } = require('../common/dbconfig')
 const mongoose = require('mongoose')
 mongoose.connect(dbUrl)
@@ -10,9 +10,9 @@ mongoose.connect(dbUrl)
 
 router.post("/batchCreate", async (req, res) => {
   try {
-    const batchExists = await Batch.findOne({ batchName: req.body.batchName });
+    const batchExists = await BatchModel.findOne({ batchName: req.body.batchName });
     if (!batchExists) {
-      const batch = new Batch(req.body);
+      const batch = new BatchModel(req.body);
       await batch.save();
       res.json({ message: "Batch created" });
     } else {
@@ -25,7 +25,7 @@ router.post("/batchCreate", async (req, res) => {
 
 router.get("/giveBatches", async (req, res) => {
   try {
-    const batchData = await Batch.find({}, { batchName: 1 });
+    const batchData = await BatchModel.find({}, { batchName: 1 });
     res.status(200).json(batchData);
   } catch (err) {
     console.log(err);
@@ -34,9 +34,9 @@ router.get("/giveBatches", async (req, res) => {
 
 router.post("/studentBatches", async (req, res) => {
   try {
-    const batch = await Batch.findOne({ batchName: req.body.batchName });
+    const batch = await BatchModel.findOne({ batchName: req.body.batchName });
     if (batch) {
-      const students = await Student.find({ batchId: batch._id });
+      const students = await StudentModel.find({ batchId: batch._id });
       res.json({ details: students });
     } else {
       res.json({ message: "Something went wrong" });
@@ -49,7 +49,7 @@ router.post("/studentBatches", async (req, res) => {
 router.get("/studentDetails/:userId",async (req, res) => {
   try {
     console.log("first");
-    let student = await Student.findById(req.params.userId);
+    let student = await StudentModel.findById(req.params.userId);
     res.json({ data: student });
   } catch (error) {
     console.log(error);
@@ -59,7 +59,7 @@ router.get("/studentDetails/:userId",async (req, res) => {
 
 router.post("/assignCapstone/:userId", async (req, res) => {
   try {
-    const student = await Student.findByIdAndUpdate(req.params.userId, {
+    const student = await StudentModel.findByIdAndUpdate(req.params.userId, {
       $push: { capstone: req.body },
     });
     if (student) {
@@ -74,7 +74,7 @@ router.post("/assignCapstone/:userId", async (req, res) => {
 
 router.get("/getCapstone", async (req, res) => {
   try {
-    const student = await Student.findById(req.headers.userid);
+    const student = await StudentModel.findById(req.headers.userid);
     res.json({ data: student.capstone });
   } catch (error) {
     console.log(error);
@@ -83,7 +83,7 @@ router.get("/getCapstone", async (req, res) => {
 
 router.post ("/postLink" , async (req, res) => {
   try {
-    const answer = new Answer({
+    const answer = new AnswerModel({
       student: req.body.userId,
       fesc:req.body.fesc,
       besc:req.body.besc,

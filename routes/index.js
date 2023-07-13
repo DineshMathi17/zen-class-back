@@ -1,8 +1,8 @@
 const express = require("express");
 const bcrypt = require("bcrypt")
-const StudentModel = require("../schemas/student")
-const AdminModel = require("../schemas/admin")
-const Batch = require("../schemas/batch.model")
+const {StudentModel} = require("../schemas/student")
+const {AdminModel} = require("../schemas/admin")
+const { BatchModel } = require("../schemas/batch.model")
 const router = express.Router();
 const { dbUrl } = require('../common/dbconfig')
 const mongoose = require('mongoose')
@@ -42,7 +42,7 @@ router.post("/stuRegister", async (req, res) => {
     let student = await StudentModel.findOne({ email: req.body.email })
     if (!student) {
 
-      const batchData = await Batch.findOne({ batchName: req.body.batchName });
+      const batchData = await BatchModel.findOne({ batchName: req.body.batchName });
       req.body.batchId = batchData._id;
       const salt = await bcrypt.genSalt(Number(process.env.SALT));
     const hashPassword = await bcrypt.hashPasswords(req.body.password, salt);

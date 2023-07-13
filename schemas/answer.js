@@ -34,4 +34,6 @@ const answerSchema=new mongoose.Schema({
 }
 )
 
-module.exports= mongoose.model("Answer",answerSchema)
+
+let AnswerModel = mongoose.model('Answer',answerSchema)
+module.exports={AnswerModel}
