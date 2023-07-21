@@ -22,7 +22,7 @@ const batchSchema = new mongoose.Schema({
   },
 },
 {
-  collection:'Batch',
+  collection:'batch',
   versionKey:false
 }
 );

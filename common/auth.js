@@ -17,14 +17,38 @@ const createToken = async(payload)=>{
     let token = await jwt.sign(payload,process.env.SECRETKEY,{expiresIn:'24h'})
     return token
 }
-
- const authenticates=(req,res,next)=>{
-    let decode = jwt.verify(req.headers.auth,process.env.JWT)
-    if(decode){
-    next();
+const validate = async(req,res,next)=>{
+    
+    if(req.headers.authorization)
+    {    
+        let token = req.headers.authorization.split(" ")[1]
+        let data = await jwt.decode(token)
+        if(Math.floor((+new Date())/1000) < data.exp)
+            next()
+        else
+            res.status(401).send({message:"Token Expired"})
     }
-    else{
-        res.json({message:'Unauthorized'})
+    else
+    {
+        res.status(400).send({message:"Token Not Found"})
     }
 }
-module.exports={ hashPasswords,hashCompare,createToken,authenticates}
+// const roleAdminvalidate = async(req,res,next)=>{
+
+//     if(req.headers.authorization)
+//     {
+        
+//         let token = req.headers.authorization.split(" ")[1]
+//         let data = await jwt.decode(token)
+//         if(data.isAdmin === 'true')
+//             next()
+//         else
+//             res.status(401).send({message:"Only Admins are allowed"})
+//     }
+//     else
+//     {
+//         res.status(400).send({message:"Token Not Found "})
+//     }
+// }
+
+module.exports={ hashPasswords,hashCompare,createToken,validate}

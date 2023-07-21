@@ -1,7 +1,7 @@
 const mongoose = require("mongoose") ;
 
 const adminSchema = new mongoose.Schema({
-  username: {
+  name: {
     type: String,
   },
   email: {
@@ -19,7 +19,7 @@ const adminSchema = new mongoose.Schema({
   },
 },
 {
-  collection:'Admin',
+  collection:'admin',
   versionKey:false
 }
 );

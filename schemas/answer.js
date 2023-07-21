@@ -29,7 +29,7 @@ const answerSchema=new mongoose.Schema({
       }
 },
 {
-  collection:'Answer',
+  collection:'answer',
   versionKey:false
 }
 )

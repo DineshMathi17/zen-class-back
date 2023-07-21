@@ -2,9 +2,9 @@ const mongoose = require("mongoose") ;
 
 const studentSchema = new mongoose.Schema(
   {
-    username: {
+   username: {
       type: String,
-      required: true,
+      required: true
     },
     email: {
       type: String,
