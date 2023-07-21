@@ -81,29 +81,6 @@ router.post('/studentSignup',async (req, res) => {
   }
 });
 
-// router.post('/studentSignup', async (req, res) => {
-//   try {
-//     let student = await StudentModel.findOne({ email: req.body.email })
-//     if (!student) {
-
-//       let hashedPassword = await hashPasswords(req.body.password)
-//       req.body.password = hashedPassword
-//       let student = await StudentModel.create(req.body)
-
-//       res.status(201).send({
-//         message: "student Signup Successfull!"
-//       })
-//     }
-//     else {
-//       res.status(400).send({ message: "student Alread Exists!" })
-//     }
-
-//   } catch (error) {
-//     res.status(500).send({ message: "Internal Server Error 500", error })
-//   }
-// })
-
-
 router.post('/login', async (req, res) => {
   try {
     const mail = await AdminModel.findOne({ email: req.body.email });
