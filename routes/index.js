@@ -10,6 +10,10 @@ mongoose.connect(dbUrl)
 const jwt = require('jsonwebtoken')
 const { hashPasswords, hashCompare, createToken } = require('../common/auth')
 
+router.get('/', function(req, res, next) {
+  res.render('index', { title: 'Zen class Event Management for students' });
+});
+
 
 router.get('/student', async function (req, res) {
   try {
